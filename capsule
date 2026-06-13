@@ -46,9 +46,9 @@ EOF
 )
 
 SITE_PAGES=$(cat << EOF
-=> ./leitura.gmi Lista de leitura
-=> ./games.gmi Minha coleção de jogos
-=> ./log/ Gemlog
+=> ./leitura.gmi 📚 Lista de leitura
+=> ./games.gmi 🎮 Minha coleção de jogos
+=> ./log/ 📓 Gemlog
 EOF
 )
 
@@ -114,11 +114,11 @@ create_capsule() {
   echo "" >> public/index.gmi
   echo "$SITE_DESCRIPTION" >> public/index.gmi
   echo "" >> public/index.gmi
-  echo "--------------------------------------------------------------------------------" >> public/index.gmi
+  echo "-----------------------------------------------------------------------" >> public/index.gmi
   echo "" >> public/index.gmi
   echo "$SITE_PAGES" >> public/index.gmi
   echo "" >> public/index.gmi
-  echo "--------------------------------------------------------------------------------" >> public/index.gmi
+  echo "-----------------------------------------------------------------------" >> public/index.gmi
   echo "" >> public/index.gmi
   echo "=> https://tukainpng.neocities.org/#about Criado por Tukain" >> public/index.gmi
 
