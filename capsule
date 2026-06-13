@@ -120,7 +120,7 @@ create_capsule() {
   echo "" >> public/index.gmi
   echo "-----------------------------------------------------------------------" >> public/index.gmi
   echo "" >> public/index.gmi
-  echo "=> https://tukainpng.neocities.org/#about Criado por Tukain" >> public/index.gmi
+  echo "=> https://tukainpng.neocities.org/#about Criado por tukain" >> public/index.gmi
 
   for FILE in $(ls ./content)
   do
@@ -137,6 +137,8 @@ create_capsule() {
     echo "" >>  $OUT_FILE
     cat ./content/$FILE >> $OUT_FILE
     echo "" >> $OUT_FILE
+    echo "" >> $OUT_FILE
+    echo "-- $SITE_AUTHOR, $POST_DAY/$POST_MONTH/$POST_YEAR" >> $OUT_FILE
   done
 
 if [ "$SITE_FEED" == "true" ]; then
@@ -175,6 +177,15 @@ fi
             </item>" >> ./public/rss.xml
     fi
     done
+
+  echo "" >> public/log/index.gmi
+  echo "-----------------------------------------------------------------------" >> public/log/index.gmi
+  echo "" >> public/log/index.gmi
+  echo '```' >> public/log/index.gmi
+  echo "Frase da build feita em $(date '+%d/%m/%Y %H:%M'):" >> public/log/index.gmi
+  echo "" >> public/log/index.gmi
+  echo "$(fortune ~/.local/share/brasil)" >> public/log/index.gmi
+  echo '```' >> public/log/index.gmi
 
 if [ "$SITE_FEED" == "true" ]; then
 cat << EOF >> ./public/rss.xml
