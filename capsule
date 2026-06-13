@@ -77,7 +77,7 @@ EOF
 
 slug_basename() {
   basename $(echo $FILE \
-      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-' '{print $2}' \
+      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}-' '{print $2}' \
       | sed \
         -e 's/ç/c/g' \
         -e 's/ã/a/g' \
@@ -165,7 +165,7 @@ fi
     POST_BASENAME=$(slug_basename)
     POST_URL="/log/posts/$POST_YEAR/$POST_MONTH/$POST_DAY/$POST_BASENAME/"
     POST_TITLE="($POST_DAY/$POST_MONTH/$POST_YEAR)\t$(basename "$(echo $FILE \
-      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-' '{print $2}' \
+      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}-' '{print $2}' \
       | tr '-' ' ')" .gmi)"
     echo -e "=> $POST_URL $POST_TITLE" >> public/log/index.gmi
     if [ "$SITE_FEED" == "true" ]; then
@@ -186,7 +186,7 @@ fi
   echo "Data e hora de compilação: $(date '+%d/%m/%Y - %H:%M:%S')" >> public/log/index.gmi
   echo "Frase da sorte:" >> public/log/index.gmi
   echo "" >> public/log/index.gmi
-  echo "$(fortune ~/.local/share/brasil)" >> public/log/index.gmi
+  echo "$(fortune -a ~/.local/share/brasil)" >> public/log/index.gmi
   echo '```' >> public/log/index.gmi
 
 if [ "$SITE_FEED" == "true" ]; then
