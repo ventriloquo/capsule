@@ -6,6 +6,7 @@ set -e
 
 SITE_NAME="Tukain"
 SITE_AUTHOR="tukain"
+SITE_FEED="true"
 SITE_BANNER=$(cat << EOF
 ⠀⠀⠀⢠⢡⢯⣟⢮⢿⢾⣯⣻⣟⣾⣵⣿⢾⡟⠕⣁⢪⣮⣳⢯⣳⢕⢧⡳⡘⣌⢳⡐⢀⠂⠐⢂⠀⡀
 ⠀⠀⠀⢰⢍⡾⣳⡫⣟⣫⣷⢯⣿⡱⣿⢞⣿⡝⣜⢮⣟⣷⡻⣗⡽⣪⢳⡸⣊⢆⢎⠔⡁⠐⡀⠁⡂⠀
@@ -74,6 +75,32 @@ Pegou a referência? Essa data é a data de lançamento da Gemini, da Nasa
 EOF
 }
 
+slug_basename() {
+  basename $(echo $FILE \
+      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-' '{print $2}' \
+      | sed \
+        -e 's/ç/c/g' \
+        -e 's/ã/a/g' \
+        -e 's/â/a/g' \
+        -e 's/á/a/g' \
+        -e 's/à/a/g' \
+        -e 's/í/i/g' \
+        -e 's/é/e/g' \
+        -e 's/è/e/g' \
+        -e 's/ê/e/g' \
+        -e 's/ô/o/g' \
+        -e 's/ó/o/g' \
+        -e 's/ò/o/g' \
+        -e 's/ò/o/g' \
+        -e 's/õ/o/g') .gmi
+}
+
+post_dates() {
+  POST_YEAR=$(echo $FILE  | awk -F'-' '{print $1}')
+  POST_MONTH=$(echo $FILE | awk -F'-' '{print $2}')
+  POST_DAY=$(echo $FILE   | awk -F'-' '{print $3}')
+}
+
 create_capsule() {
   mkdir -p content public/log
 
@@ -97,11 +124,8 @@ create_capsule() {
 
   for FILE in $(ls ./content)
   do
-    POST_YEAR=$(echo $FILE  | awk -F'-' '{print $1}')
-    POST_MONTH=$(echo $FILE | awk -F'-' '{print $2}')
-    POST_DAY=$(echo $FILE   | awk -F'-' '{print $3}')
-    OUT_DIR_BASENAME=$(basename $(echo $FILE \
-      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-' '{print $2}') .gmi)
+    post_dates
+    OUT_DIR_BASENAME=$(slug_basename)
     OUT_DIR="public/log/posts/$POST_YEAR/$POST_MONTH/$POST_DAY/$OUT_DIR_BASENAME"
     OUT_FILE="$OUT_DIR/index.gmi"
     mkdir -p $OUT_DIR
@@ -115,6 +139,7 @@ create_capsule() {
     echo "" >> $OUT_FILE
   done
 
+if [ "$SITE_FEED" == "true" ]; then
 SITE_URL="gemini://tukain.flounder.online"
 cat << EOF > ./public/rss.xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -124,6 +149,7 @@ cat << EOF > ./public/rss.xml
 <link>$SITE_URL</link>
 <description>Feed RSS da minha cápsula Gemini</description>
 EOF
+fi
 
   echo "=> / ⬅️  Voltar" > public/log/index.gmi
   echo "" >> public/log/index.gmi
@@ -133,26 +159,29 @@ EOF
   echo "" >> public/log/index.gmi
   for FILE in $(ls ./content | sort -r)
   do
-    POST_YEAR=$(echo $FILE  | awk -F'-' '{print $1}')
-    POST_MONTH=$(echo $FILE | awk -F'-' '{print $2}')
-    POST_DAY=$(echo $FILE   | awk -F'-' '{print $3}')
-    POST_BASENAME=$(basename $(echo $FILE \
-      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-' '{print $2}') .gmi)
+    post_dates
+    POST_BASENAME=$(slug_basename)
     POST_URL="/log/posts/$POST_YEAR/$POST_MONTH/$POST_DAY/$POST_BASENAME/"
-    POST_TITLE="($POST_DAY/$POST_MONTH/$POST_YEAR)\t$(echo $POST_BASENAME | tr '-' ' ')"
+    POST_TITLE="($POST_DAY/$POST_MONTH/$POST_YEAR)\t$(basename "$(echo $FILE \
+      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-' '{print $2}' \
+      | tr '-' ' ')" .gmi)"
     echo -e "=> $POST_URL $POST_TITLE" >> public/log/index.gmi
-    echo "<item>
-            <title>$(echo $POST_TITLE | sed 's/\\t/\t/g')</title>
-            <link>$SITE_URL$POST_URL</link>
-            <guid>$SITE_URL$POST_URL</guid>
-            <pubDate>$(date '+%a, %d %b %Y %T GMT' --date=$POST_YEAR-$POST_MONTH-$POST_DAY)</pubDate>
-          </item>" >> ./public/rss.xml
+    if [ "$SITE_FEED" == "true" ]; then
+      echo "<item>
+              <title>$(echo $POST_TITLE | sed 's/\\t/\t/g')</title>
+              <link>$SITE_URL$POST_URL</link>
+              <guid>$SITE_URL$POST_URL</guid>
+              <pubDate>$(date '+%a, %d %b %Y %T GMT' --date=$POST_YEAR-$POST_MONTH-$POST_DAY)</pubDate>
+            </item>" >> ./public/rss.xml
+    fi
     done
 
+if [ "$SITE_FEED" == "true" ]; then
 cat << EOF >> ./public/rss.xml
 </channel>
 </rss>
 EOF
+fi
 }
 
 version() {
