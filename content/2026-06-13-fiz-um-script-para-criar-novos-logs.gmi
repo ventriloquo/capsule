@@ -1,0 +1,33 @@
+Como se a criação de conteúdo por aqui já não fosse simples o bastante, eu fiz
+um script para deixar as coisas ainda mais fáceis para mim!
+
+Ele não foi um script feito inteiramente do 0, eu fiz com base em outro script
+que já fiz que serve para gerar blogs estáticos em HTML. Não reaproveitei muita
+coisa dele, já que Gemtext é tão simples quanto markdown, então não precisei de
+conversores de markdown para html e nem de um boiler-plate enorme.
+
+Só reaproveitei a criação de diretórios e listagem de posts com base nos nomes
+dos arquivos.
+
+Resumindo, se eu tenho um arquivo chamado "2001-09-11-celso-portiolli" no
+diretório "content", o script vai gerar uma sequência de diretórios na
+pasta "public" assim:
+
+```
+public/log/2001/09/11/celso-portiolli/
+```
+
+E vai pôr um link para a página contida nesse diretório na página de indexação
+de logs (/log/) assim:
+
+```
+(11/09/2001)	celso portiolli
+```
+
+E é basicamente isso o que o script faz! Bacana né? Além de criar uma url
+bonitinha ele faz essa listagem automática também.
+
+O código-fonte da minha cápsula está disponível no Codeberg, o repositório
+é este aqui:
+
+=> https://codeberg.org/tukain/capsule
