@@ -1,0 +1,155 @@
+#!/bin/sh
+INPUT=$1 # DON'T CHANGE THIS
+set -e
+
+################################################################################
+
+SITE_NAME="Tukain"
+SITE_AUTHOR="tukain"
+SITE_BANNER=$(cat << EOF
+⠀⠀⠀⢠⢡⢯⣟⢮⢿⢾⣯⣻⣟⣾⣵⣿⢾⡟⠕⣁⢪⣮⣳⢯⣳⢕⢧⡳⡘⣌⢳⡐⢀⠂⠐⢂⠀⡀
+⠀⠀⠀⢰⢍⡾⣳⡫⣟⣫⣷⢯⣿⡱⣿⢞⣿⡝⣜⢮⣟⣷⡻⣗⡽⣪⢳⡸⣊⢆⢎⠔⡁⠐⡀⠁⡂⠀
+⠀⠀⢀⠣⣸⢋⢮⠸⡕⣽⣏⣿⢊⡾⣝⡿⣺⠔⣽⣻⣯⢿⣝⢷⡝⣮⢣⢎⢖⠅⡧⢊⠔⠁⢄⠀⠌⠠
+⠀⠀⡀⠢⡣⡱⡑⢕⡺⣹⢖⡯⢸⡣⣻⣝⢽⢸⡿⣯⣟⡽⣯⡻⣮⢳⡕⡧⣑⢇⠝⡔⢨⠂⡐⠀⠄⡁
+⠀⠀⠀⢸⠐⡔⢱⠱⡨⡳⣹⢑⢭⢊⡿⣨⢇⢿⣺⣧⣻⣞⣽⣫⢾⣕⢯⡺⣢⠳⡱⠌⡢⢁⠌⢂⠠⠐
+⠀⠀⠀⠕⡨⢈⠆⠳⡸⢨⡋⢢⠣⣘⢎⢎⢖⣟⢗⣿⣳⣟⢾⡳⣷⢝⣮⡻⣜⢕⢅⢣⢐⠡⢂⠡⠀⠠
+⠀⠀⠀⢅⠨⠀⠎⡸⡡⢪⠐⡕⢌⢖⡱⣙⠂⠟⠝⢯⢷⣫⢟⡻⢼⣫⢾⡹⠪⠢⠃⠂⠀⠁⠠⠈⠀⠄
+⠀⠀⠀⠢⢈⠌⠂⢔⠡⢊⢔⢅⠺⡔⡑⠬⢤⡢⣐⠄⢄⠤⡡⣾⢯⡳⠁⠀⠀⡀⢐⠌⡀⠢⠀⠠⠀⡀
+⠀⠀⠀⢑⠠⢊⠂⢌⢢⠑⢅⢎⢕⠜⣜⣝⢾⡢⣎⢮⢪⡮⣻⣺⡯⣫⠂⠀⠀⠠⡱⢥⡩⡢⡰⠠⡁⠄
+⠀⠀⠀⠀⠢⢁⠐⢅⠢⡑⡡⢨⣎⢾⢧⡿⣹⢮⢷⣝⢷⣯⣻⢾⣽⡣⡈⠀⠁⠐⡑⢜⠬⡪⡘⠔⠠⠀
+⠀⠀⠀⠀⠁⡄⡁⠢⠐⠄⢂⢜⢮⣟⢷⣻⣽⢯⡷⣻⢯⢾⡽⣷⢯⡗⠄⠈⠀⠈⢌⠪⣊⢎⠨⠂⠐⠀
+⠀⠀⠀⠀⠀⠢⢀⠑⡁⡊⡐⢘⢷⡽⣫⣷⣻⡳⣟⢵⢯⣳⣟⣽⣟⣕⢁⠀⠁⠀⠠⠣⡊⢆⠁⠂⠀⠀
+⠀⠀⠀⠀⠀⠈⠢⡀⡑⠄⡘⢨⡗⣽⢳⡽⡮⣫⣪⡷⣯⠾⣳⢟⡮⡳⠀⠄⠁⢀⠀⠑⢌⠢⠁⠠⠀⠀
+⠀⠀⠀⠀⠀⠈⠐⠀⢐⠐⢈⠄⡻⣜⢗⡽⣪⢞⡵⡻⣎⣗⠷⡵⢬⢤⠠⡀⠄⡠⠐⢀⠂⢂⠐⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⠁⠄⡀⠂⠔⢘⢎⢗⡽⣪⡳⣉⡞⠷⠝⠿⡳⣕⢯⠮⢊⠢⠐⠀⢁⠀⠠⠀⢀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠐⠠⠀⠌⠀⠠⣋⢮⡪⣗⢽⣪⣟⢟⡟⡷⢶⠦⢦⠲⡠⢂⠐⠈⠄⡁⠂⠠⠀⠀⠀
+⠀⠀⠀⠀⠀⠄⢁⠈⡀⠂⠐⠀⠀⢧⢪⡺⣜⡵⣳⢝⡯⣞⢗⠦⣓⢔⢌⡢⠂⠌⡀⠄⠀⠂⠐⠀⠀⠀
+⠀⠀⠀⠠⠈⠄⠠⠀⠄⢁⠈⠀⠀⢕⢕⠽⡬⡺⡕⣯⢻⣺⡳⣻⢎⡾⡸⢌⠓⡅⢐⠀⠁⠐⠀⠀⠄⠀
+⠀⠠⡈⢄⠑⡀⢁⠐⢀⠂⠐⠀⠀⢂⢣⠻⣜⢵⡪⠳⡝⡮⣹⢣⠫⡜⢕⠕⡁⠢⠀⡀⠁⠀⠐⠀⠀⠀
+⢀⠀⢌⠂⠔⠀⠄⠂⠄⡈⠀⠀⠀⠠⢑⢝⢪⢎⣗⢝⢮⣘⢌⠕⡑⢌⠊⠄⠐⢀⠀⠀⠀⠂⠀⠄⠀⠀
+EOF
+)
+SITE_DESCRIPTION=$(cat << EOF
+# Olá! Tudo bem com você?
+
+Seja bem-vindo(a) a minha cápsula!
+
+Eu ainda sou novo aqui, mas espero aprender a me virar.
+
+Esta cápsula vai funcionar +/- como um "alter ego" do meu site da Web:
+=> https://tukainpng.neocities.org
+
+Com a diferença sendo, obviamente, que aqui tudo é beeem mais simples.
+EOF
+)
+SITE_PAGES=$(cat << EOF
+=> ./leitura.gmi Lista de leitura
+=> ./log/ Gemlog
+EOF
+)
+
+################################################################################
+
+sample() {
+  cat << EOF > content/1964-04-08-página-de-teste.gmi
+\`\`\`
+Pegou a referência? Essa data é a data de lançamento da Gemini, da Nasa
+\`\`\`
+
+# Título
+
+## Subtítulo
+
+### Sub-subtítulo
+
+* Uma
+* Lista
+
+=> ../../../../../ Um link
+
+> Uma citação
+EOF
+}
+
+create_capsule() {
+  mkdir -p content public/log
+  sample
+
+  cp *.gmi public
+  echo '```' >  public/index.gmi
+  figlet -f slant "$SITE_NAME" >> public/index.gmi
+  echo '```' >>  public/index.gmi
+  echo '```' >>  public/index.gmi
+  echo "$SITE_BANNER" >> public/index.gmi
+  echo '```' >>  public/index.gmi
+  echo "" >> public/index.gmi
+  echo "$SITE_DESCRIPTION" >> public/index.gmi
+  echo "" >> public/index.gmi
+  echo "--------------------------------------------------------------------------------" >> public/index.gmi
+  echo "" >> public/index.gmi
+  echo "$SITE_PAGES" >> public/index.gmi
+  echo "" >> public/index.gmi
+  echo "--------------------------------------------------------------------------------" >> public/index.gmi
+  echo "" >> public/index.gmi
+  echo "=> https://tukain.neocities.org/#about Criado por Tukain" >> public/index.gmi
+
+  for FILE in $(ls ./content)
+  do
+    POST_YEAR=$(echo $FILE  | awk -F'-' '{print $1}')
+    POST_MONTH=$(echo $FILE | awk -F'-' '{print $2}')
+    POST_DAY=$(echo $FILE   | awk -F'-' '{print $3}')
+    OUT_DIR_BASENAME=$(basename $(echo $FILE \
+      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-' '{print $2}') .gmi)
+    OUT_DIR="public/log/posts/$POST_YEAR/$POST_MONTH/$POST_DAY/$OUT_DIR_BASENAME"
+    OUT_FILE="$OUT_DIR/index.gmi"
+    mkdir -p $OUT_DIR
+    echo "=> /log/ ⬅️  Voltar" >  $OUT_FILE
+    echo "" >>  $OUT_FILE
+    echo '```' >>  $OUT_FILE
+    figlet -f small "$POST_DAY / $POST_MONTH / $POST_YEAR" >>  $OUT_FILE
+    echo '```' >>  $OUT_FILE
+    echo "" >>  $OUT_FILE
+    cat ./content/$FILE >> $OUT_FILE
+    echo "" >> $OUT_FILE
+  done
+
+  echo "=> / ⬅️  Voltar" > public/log/index.gmi
+  echo "" >> public/log/index.gmi
+  echo '```' >> public/log/index.gmi
+  figlet -f slant "Gemlog" >> public/log/index.gmi
+  echo '```' >> public/log/index.gmi
+  echo "" >> public/log/index.gmi
+  for FILE in $(ls ./content | sort -r)
+  do
+    POST_YEAR=$(echo $FILE  | awk -F'-' '{print $1}')
+    POST_MONTH=$(echo $FILE | awk -F'-' '{print $2}')
+    POST_DAY=$(echo $FILE   | awk -F'-' '{print $3}')
+    POST_BASENAME=$(basename $(echo $FILE \
+      | awk -F'[0-9]{4}-[0-9]{2}-[0-9]{2}-' '{print $2}') .gmi)
+    POST_URL="/log/posts/$POST_YEAR/$POST_MONTH/$POST_DAY/$POST_BASENAME/"
+    POST_TITLE="($POST_DAY/$POST_MONTH/$POST_YEAR)\t$(echo $POST_BASENAME | tr '-' ' ')"
+    echo -e "=> $POST_URL $POST_TITLE" >> public/log/index.gmi
+  done
+}
+
+build_rss() {
+  printf "\033[31mTODO:\033[0m build_rss\n"
+}
+
+version() {
+  printf "\033[32mblog.gmi \033[34m(v0.0.1)\033[0m\n"
+}
+
+case "$INPUT" in
+  "create") create_capsule;;
+  "version") version;;
+  *) cat << EOF
+
+Usage: capsule  <command>
+
+version - shows version number
+create  - create the capsule
+
+EOF
+;;
+esac
