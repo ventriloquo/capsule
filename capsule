@@ -182,7 +182,9 @@ fi
   echo "-----------------------------------------------------------------------" >> public/log/index.gmi
   echo "" >> public/log/index.gmi
   echo '```' >> public/log/index.gmi
-  echo "Frase da build feita em $(date '+%d/%m/%Y %H:%M'):" >> public/log/index.gmi
+  echo "Git hash: $(git log | head -n1 | awk '{print $2}')" >> public/log/index.gmi
+  echo "Data e hora de compilação: $(date '+%d/%m/%Y - %H:%M:%S')" >> public/log/index.gmi
+  echo "Frase da sorte:" >> public/log/index.gmi
   echo "" >> public/log/index.gmi
   echo "$(fortune ~/.local/share/brasil)" >> public/log/index.gmi
   echo '```' >> public/log/index.gmi
