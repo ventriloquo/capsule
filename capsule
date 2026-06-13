@@ -29,6 +29,7 @@ SITE_BANNER=$(cat << EOF
 ⢀⠀⢌⠂⠔⠀⠄⠂⠄⡈⠀⠀⠀⠠⢑⢝⢪⢎⣗⢝⢮⣘⢌⠕⡑⢌⠊⠄⠐⢀⠀⠀⠀⠂⠀⠄⠀⠀
 EOF
 )
+
 SITE_DESCRIPTION=$(cat << EOF
 # Olá! Tudo bem com você?
 
@@ -42,8 +43,10 @@ Esta cápsula vai funcionar +/- como um "alter ego" do meu site da Web:
 Com a diferença sendo, obviamente, que aqui tudo é beeem mais simples.
 EOF
 )
+
 SITE_PAGES=$(cat << EOF
 => ./leitura.gmi Lista de leitura
+=> ./games.gmi Minha coleção de jogos
 => ./log/ Gemlog
 EOF
 )
@@ -73,7 +76,6 @@ EOF
 
 create_capsule() {
   mkdir -p content public/log
-  sample
 
   cp *.gmi public
   echo '```' >  public/index.gmi
@@ -91,7 +93,7 @@ create_capsule() {
   echo "" >> public/index.gmi
   echo "--------------------------------------------------------------------------------" >> public/index.gmi
   echo "" >> public/index.gmi
-  echo "=> https://tukain.neocities.org/#about Criado por Tukain" >> public/index.gmi
+  echo "=> https://tukainpng.neocities.org/#about Criado por Tukain" >> public/index.gmi
 
   for FILE in $(ls ./content)
   do
@@ -113,6 +115,16 @@ create_capsule() {
     echo "" >> $OUT_FILE
   done
 
+SITE_URL="gemini://tukain.flounder.online"
+cat << EOF > ./public/rss.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+<title>$SITE_NAME</title>
+<link>$SITE_URL</link>
+<description>Feed RSS da minha cápsula Gemini</description>
+EOF
+
   echo "=> / ⬅️  Voltar" > public/log/index.gmi
   echo "" >> public/log/index.gmi
   echo '```' >> public/log/index.gmi
@@ -129,11 +141,18 @@ create_capsule() {
     POST_URL="/log/posts/$POST_YEAR/$POST_MONTH/$POST_DAY/$POST_BASENAME/"
     POST_TITLE="($POST_DAY/$POST_MONTH/$POST_YEAR)\t$(echo $POST_BASENAME | tr '-' ' ')"
     echo -e "=> $POST_URL $POST_TITLE" >> public/log/index.gmi
-  done
-}
+    echo "<item>
+            <title>$(echo $POST_TITLE | sed 's/\\t/\t/g')</title>
+            <link>$SITE_URL$POST_URL</link>
+            <guid>$SITE_URL$POST_URL</guid>
+            <pubDate>$(date '+%a, %d %b %Y %T GMT' --date=$POST_YEAR-$POST_MONTH-$POST_DAY)</pubDate>
+          </item>" >> ./public/rss.xml
+    done
 
-build_rss() {
-  printf "\033[31mTODO:\033[0m build_rss\n"
+cat << EOF >> ./public/rss.xml
+</channel>
+</rss>
+EOF
 }
 
 version() {
