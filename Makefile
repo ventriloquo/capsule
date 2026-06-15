@@ -2,4 +2,4 @@ all:
 	./capsule create
 
 clean:
-	rm -rf public
+	rm -rf public html
