@@ -7,6 +7,7 @@ set -e
 SITE_NAME="Tukain"
 SITE_AUTHOR="tukain"
 SITE_FEED="true"
+SITE_GENERATE_HTML="true"
 SITE_BANNER=$(cat << EOF
 ⠀⠀⠀⢠⢡⢯⣟⢮⢿⢾⣯⣻⣟⣾⣵⣿⢾⡟⠕⣁⢪⣮⣳⢯⣳⢕⢧⡳⡘⣌⢳⡐⢀⠂⠐⢂⠀⡀
 ⠀⠀⠀⢰⢍⡾⣳⡫⣟⣫⣷⢯⣿⡱⣿⢞⣿⡝⣜⢮⣟⣷⡻⣗⡽⣪⢳⡸⣊⢆⢎⠔⡁⠐⡀⠁⡂⠀
@@ -101,6 +102,128 @@ post_dates() {
   POST_DAY=$(echo $FILE   | awk -F'-' '{print $3}')
 }
 
+create_html() {
+local OLD_IFS="$IFS"
+local IFS="
+"
+local INSIDE_PRE=0
+
+cat << EOF
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="$SITE_AUTHOR" />
+    <title>$SITE_NAME</title>
+  </head>
+  <style>
+  * {
+    margin: 0;
+    padding : 0;
+  }
+
+  :root {
+    --bg: #1c1b19;
+    --fg: #fce8c3;
+    --lk: #2c78bf;
+    --qt: #262626;
+    --cd: #121212;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    padding: 1em;
+    max-width: 80ch;
+    display: block;
+    margin: auto;
+    font-family: sans;
+  }
+
+  h1, h2, h3 {
+    margin-bottom: -1em;
+  }
+
+  a {
+    color: var(--lk);
+    text-decoration: none;
+
+    &:hover {
+      color: #68a8e4;
+    }
+  }
+
+  blockquote {
+    background-color: var(--qt);
+    padding: 1em;
+    margin-bottom: -1em;
+    border-left: solid 5px var(--lk)
+  }
+  
+  pre {
+    background-color: var(--cd);
+    padding: 1em;
+    margin-bottom: 1em;
+    color: #fbb829;
+    overflow-x: scroll;
+
+    br {
+      display: none;
+    }
+  }
+
+  li {
+    list-style-position: inside;
+    margin-top: -1em;
+  }
+
+  li + br {
+    display: none;
+  }
+
+  hr {
+    border-top: dashed 1px var(--fg);
+    border-bottom: 0;
+    margin-bottom: -1em;
+  }
+
+  </style>
+  <body>
+EOF
+
+for LINE in $(cat $1)
+do
+  if [ $LINE = '```' ]; then
+    if [ "$INSIDE_PRE" -eq 0 ]; then
+      printf '<pre>'
+      INSIDE_PRE=1
+    else
+      printf '</pre>'
+      INSIDE_PRE=0
+    fi
+    else
+      echo $LINE | sed \
+        -e 's#=> \([^ ]*\) \(.*\)#<a href="\1">\2</a>#' \
+        -e 's#=> \(.*\)#<a href="\1">\1</a>#' \
+        -e 's/^### \(.*\)/<h3>\1<\/h3>/' \
+        -e 's/^## \(.*\)/<h2>\1<\/h2>/' \
+        -e 's/^# \(.*\)/<h1>\1<\/h1>/' \
+        -e 's#^\* \(.*\)#<li>\1</li>#' \
+        -e 's#^> \(.*\)#<blockquote><p>\1</p></blockquote>#' \
+        -e 's#^---------.*$#<hr>#' \
+        -e 's/$/<br><br>/g'
+  fi
+done
+
+cat << EOF
+  </body>
+</html>
+EOF
+
+local IFS="OLD_IFS"
+}
+
 create_capsule() {
   mkdir -p content public/log
 
@@ -128,7 +251,10 @@ create_capsule() {
     OUT_DIR_BASENAME=$(slug_basename)
     OUT_DIR="public/log/posts/$POST_YEAR/$POST_MONTH/$POST_DAY/$OUT_DIR_BASENAME"
     OUT_FILE="$OUT_DIR/index.gmi"
+    [ "$SITE_GENERATE_HTML" == "true" ] && OUT_DIR_HTML="html/log/posts/$POST_YEAR/$POST_MONTH/$POST_DAY/$OUT_DIR_BASENAME"
+    [ "$SITE_GENERATE_HTML" == "true" ] && OUT_FILE_HTML="$OUT_DIR_HTML/index.html"
     mkdir -p $OUT_DIR
+    [ "$SITE_GENERATE_HTML" == "true" ] &&  mkdir -p $OUT_DIR_HTML
     echo "=> /log/ ⬅️  Voltar" >  $OUT_FILE
     echo "" >>  $OUT_FILE
     echo '```' >>  $OUT_FILE
@@ -139,6 +265,14 @@ create_capsule() {
     echo "" >> $OUT_FILE
     echo "" >> $OUT_FILE
     echo "-- $SITE_AUTHOR, $POST_DAY/$POST_MONTH/$POST_YEAR" >> $OUT_FILE
+    [ "$SITE_GENERATE_HTML" == "true" ] && create_html $OUT_FILE > $OUT_FILE_HTML
+  done
+
+  [ "$SITE_GENERATE_HTML" == "true" ] && for FILE in $(ls public/*.gmi)
+  do
+    create_html $FILE > ./html/$(basename $FILE .gmi).temp
+    cat ./html/$(basename $FILE .gmi).temp | sed 's/\.gmi/\.html/g' > ./html/$(basename $FILE .gmi).html
+    rm ./html/$(basename $FILE .gmi).temp
   done
 
 if [ "$SITE_FEED" == "true" ]; then
@@ -188,6 +322,8 @@ fi
   echo "" >> public/log/index.gmi
   echo "$(fortune -a ~/.local/share/brasil)" >> public/log/index.gmi
   echo '```' >> public/log/index.gmi
+
+  [ "$SITE_GENERATE_HTML" == "true" ] && create_html public/log/index.gmi > html/log/index.html
 
 if [ "$SITE_FEED" == "true" ]; then
 cat << EOF >> ./public/rss.xml
