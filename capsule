@@ -6,7 +6,7 @@ set -e
 
 SITE_NAME="Tukain"
 SITE_AUTHOR="tukain"
-SITE_FEED="true"
+SITE_FEED="false"
 SITE_GENERATE_HTML="true"
 SITE_BANNER=$(cat << EOF
 ⠀⠀⠀⢠⢡⢯⣟⢮⢿⢾⣯⣻⣟⣾⣵⣿⢾⡟⠕⣁⢪⣮⣳⢯⣳⢕⢧⡳⡘⣌⢳⡐⢀⠂⠐⢂⠀⡀
