@@ -47,6 +47,7 @@ EOF
 )
 
 SITE_PAGES=$(cat << EOF
+=> ./sobre.gmi 🫠 Sobre mim
 => ./leitura.gmi 📚 Lista de leitura
 => ./games.gmi 🎮 Minha coleção de jogos
 => ./log/ 📓 Gemlog

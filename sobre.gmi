@@ -1,0 +1,21 @@
+=> / ⬅️  Voltar
+
+```
+   _____       __                 __  ____         
+  / ___/____  / /_  ________     /  |/  (_)___ ___ 
+  \__ \/ __ \/ __ \/ ___/ _ \   / /|_/ / / __ `__ \
+ ___/ / /_/ / /_/ / /  /  __/  / /  / / / / / / / /
+/____/\____/_.___/_/   \___/  /_/  /_/_/_/ /_/ /_/ 
+```
+
+# Diogo Fernandes, aka, Tukain
+## Usuário Linux / Blogger / Aspirante a programador
+
+Sou só mais um neste vasto mundo chamado internet. Isso é um fato. Porém, quero poder deixar meus 10 centavos de contribuição. Ou seja, só tô afim de fazer algo bacana para mostrar para os meus conhecidos e… quem sabe isso tenha algum retorno no futuro.
+
+Gosto do mundo open-source, sistemas Linux/Unix/BSD, história da computação, escrever pequenos shell-scripts para agilizar algumas tarefas no computador e estudo programação no meu tempo livre.
+
+Gosto da indie-web, detesto redes “sociais”.
+
+Também gosto de customizar a aparência do meu desktop e brincar com CSS.
+
