@@ -25,7 +25,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build site
-        run: make
+        run: sudo apt install figlet && make
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
