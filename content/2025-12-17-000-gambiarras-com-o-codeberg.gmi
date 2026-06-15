@@ -12,8 +12,7 @@ Esse site por exemplo, eu faço uma modificação no repositório (como criar um
 
 Ou seja, eu consigo fazer uma espécie de backup dos meus repositórios. Bastando eu registrar outros repositórios de destino.
 
-Ainda usando esse site como exemplo, ele está hospedado no Codeberg, Github e mais outro local, as mudanças são passadas de um para o outro, e no final, todos eles são clones do repositório do Codeberg. E além disso, o meu site fica hospedado tanto no Codeberg quanto no Neocities, já que o Codeberg possui o serviço "Codeberg Pages (equivalente ao
-Github Pages) e no Github eu deixei um Workflow para mandar o site contruído para o Neocities.
+Ainda usando esse site como exemplo, ele está hospedado no Codeberg, Github e mais outro local, as mudanças são passadas de um para o outro, e no final, todos eles são clones do repositório do Codeberg. E além disso, o meu site fica hospedado tanto no Codeberg quanto no Neocities, já que o Codeberg possui o serviço "Codeberg Pages (equivalente ao Github Pages) e no Github eu deixei um Workflow para mandar o site contruído para o Neocities.
 
 > Resumindo, dá para criar uma corrente de repositórios ligados a um repositório principal que são idênticos.
 
