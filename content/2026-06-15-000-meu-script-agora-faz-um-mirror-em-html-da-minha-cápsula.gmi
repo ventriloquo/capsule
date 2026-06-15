@@ -1,0 +1,7 @@
+Eu sei que o próprio Flounder já cria uma versão HTML visualizável na Web automaticamente, mas eu não curto muito a forma como a cápsula é renderizada (o CSS e etc), então eu quis fazer com que o meu script tivesse a capacidade de gerar um Website em paralelo à criação da cápsula. O que na realidade foi até que bem mais simples do que eu imaginei!
+
+Como o Gemtext tem uma sintaxe bem simples, em questão de alguns minutos eu já consegui criar um conversor de Gemtext para HTML (com uma ajuda de IA, porquê eu não tenho o nível de autismo necessário para usar REGEX sem perder 15 anos de vida por conta do stress).
+
+Eu vou deixar a versão HTML da minha cápsula hosteada no Github, por mais que ele seja uma porcaria, ele é a plataforma mais acessível para mim no momento em termos de ter múltiplos sites no ar.
+
+=> https://ventriloquo.github.io/capsule Aqui está um link para a versão HTML
