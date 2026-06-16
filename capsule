@@ -57,7 +57,7 @@ EOF
 ################################################################################
 
 sample() {
-  cat << EOF > content/1964-04-08-página-de-teste.gmi
+  cat << EOF > content/1964-04-08-000-página-de-teste.gmi
 \`\`\`
 Pegou a referência? Essa data é a data de lançamento da Gemini, da Nasa
 \`\`\`
@@ -146,9 +146,23 @@ cat << EOF
     margin-bottom: -1em;
   }
 
+  h1 {
+    color: #98bc37;
+  }
+
+  h2 {
+    color: #fbb829;
+  }
+
+  h3 {
+    color: #ff5f00;
+  }
+
   a {
     color: var(--lk);
     text-decoration: none;
+    display: block;
+    margin-bottom: -1.5em;
 
     &:hover {
       color: #68a8e4;
@@ -156,17 +170,18 @@ cat << EOF
   }
 
   blockquote {
-    background-color: var(--qt);
+    background-color: #202020;
     padding: 1em;
     margin-bottom: -1em;
-    border-left: solid 5px var(--lk)
+    border-left: solid 5px #e02c6d;
+    color: #e02c6d;
   }
   
   pre {
-    background-color: var(--cd);
+    color: #ff8700;
     padding: 1em;
     margin-bottom: 1em;
-    color: #fbb829;
+    margin-top: -1em;
     overflow-x: scroll;
 
     br {
@@ -177,6 +192,7 @@ cat << EOF
   li {
     list-style-position: inside;
     margin-top: -1em;
+    color: #ff5c8f;
   }
 
   li + br {
@@ -324,7 +340,7 @@ fi
   echo "$(fortune -a ~/.local/share/brasil)" >> public/log/index.gmi
   echo '```' >> public/log/index.gmi
 
-  [ "$SITE_GENERATE_HTML" == "true" ] && create_html public/log/index.gmi > html/log/index.html
+  [ "$SITE_GENERATE_HTML" == "true" ] && create_html public/log/index.gmi | sed 's/\t/<spam style="display: inline-block; width: 20px"><\/spam>/g' > html/log/index.html
 
 if [ "$SITE_FEED" == "true" ]; then
 cat << EOF >> ./public/rss.xml
