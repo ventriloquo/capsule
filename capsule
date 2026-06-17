@@ -394,7 +394,7 @@ new_post() {
 }
 
 version() {
-  printf "\033[32mblog.gmi \033[34m(v0.0.1)\033[0m\n"
+  printf "\033[32mcapsule \033[34m(v0.0.2)\033[0m\n"
 }
 
 case "$INPUT" in
