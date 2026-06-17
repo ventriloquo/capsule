@@ -385,6 +385,14 @@ EOF
 fi
 }
 
+new_post() {
+  [ -z "$EDITOR" ] && EDITOR=vim
+  printf "Título do post: "
+  read TITLE
+  TITLE="$(echo $TITLE | tr ' ' '-')"
+  $EDITOR content/"$(date '+%Y-%m-%d')-000-$TITLE"
+}
+
 version() {
   printf "\033[32mblog.gmi \033[34m(v0.0.1)\033[0m\n"
 }
@@ -392,12 +400,14 @@ version() {
 case "$INPUT" in
   "create") create_capsule;;
   "version") version;;
+  "new") new_post;;
   *) cat << EOF
 
 Usage: capsule  <command>
 
 version - shows version number
 create  - create the capsule
+new     - new post
 
 EOF
 ;;
