@@ -128,8 +128,28 @@ cat << EOF
     --bg: #1c1b19;
     --fg: #fce8c3;
     --lk: #2c78bf;
-    --qt: #262626;
-    --cd: #121212;
+    --l2: #68a8e4;
+    --qb: #202020;
+    --qt: #e02c6d;
+    --cd: #ff8700;
+    --h1: #98bc37;
+    --h2: #fbb829;
+    --h3: #ff5f00;
+  }
+
+  @media only screen and (prefers-color-scheme: light) {
+    :root {
+      --bg: #feedf3;
+      --fg: #33292b;
+      --lk: #006e93;
+      --l2: #1d8991;
+      --qb: #f8e2e7;
+      --qt: #df2d52;
+      --cd: #f6661e;
+      --h1: #2e916d;
+      --h2: #5e2180;
+      --h3: #c29461;
+    }
   }
 
   body {
@@ -147,15 +167,15 @@ cat << EOF
   }
 
   h1 {
-    color: #98bc37;
+    color: var(--h1);
   }
 
   h2 {
-    color: #fbb829;
+    color: var(--h2);
   }
 
   h3 {
-    color: #ff5f00;
+    color: var(--h3);
   }
 
   a {
@@ -165,21 +185,24 @@ cat << EOF
     margin-bottom: -1.5em;
 
     &:hover {
-      color: #68a8e4;
+      color: var(--l2);
     }
   }
 
   blockquote {
-    background-color: #202020;
+    background-color: var(--qb);
     padding: 1em;
     margin-bottom: -1em;
-    border-left: solid 5px #e02c6d;
-    color: #e02c6d;
+    border-left: solid 5px var(--qt);
+    color: var(--qt);
   }
-  
+
   pre {
-    color: #ff8700;
-    padding: 1em;
+    color: var(--cd);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: auto;
+    padding-right: auto;
     margin-bottom: 1em;
     margin-top: -1em;
     overflow-x: scroll;
@@ -192,7 +215,7 @@ cat << EOF
   li {
     list-style-position: inside;
     margin-top: -1em;
-    color: #ff5c8f;
+    color: var(--h3);
   }
 
   li + br {
@@ -347,9 +370,8 @@ EOF
 \`\`\`
 Git hash: $(git log | head -n1 | awk '{print $2}')
 Data e hora de compilação: $(date '+%d/%m/%Y - %H:%M:%S')
-Frase da sorte:
 
-$(fortune -a ~/.local/share/brasil)
+$(cowsay $(fortune -a ~/.local/share/brasil))
 \`\`\`
 EOF
 

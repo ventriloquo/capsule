@@ -16,8 +16,28 @@
     --bg: #1c1b19;
     --fg: #fce8c3;
     --lk: #2c78bf;
-    --qt: #262626;
-    --cd: #121212;
+    --l2: #68a8e4;
+    --qb: #202020;
+    --qt: #e02c6d;
+    --cd: #ff8700;
+    --h1: #98bc37;
+    --h2: #fbb829;
+    --h3: #ff5f00;
+  }
+
+  @media only screen and (prefers-color-scheme: light) {
+    :root {
+      --bg: #feedf3;
+      --fg: #33292b;
+      --lk: #006e93;
+      --l2: #1d8991;
+      --qb: #f8e2e7;
+      --qt: #df2d52;
+      --cd: #f6661e;
+      --h1: #2e916d;
+      --h2: #5e2180;
+      --h3: #c29461;
+    }
   }
 
   body {
@@ -35,15 +55,15 @@
   }
 
   h1 {
-    color: #98bc37;
+    color: var(--h1);
   }
 
   h2 {
-    color: #fbb829;
+    color: var(--h2);
   }
 
   h3 {
-    color: #ff5f00;
+    color: var(--h3);
   }
 
   a {
@@ -53,21 +73,24 @@
     margin-bottom: -1.5em;
 
     &:hover {
-      color: #68a8e4;
+      color: var(--l2);
     }
   }
 
   blockquote {
-    background-color: #202020;
+    background-color: var(--qb);
     padding: 1em;
     margin-bottom: -1em;
-    border-left: solid 5px #e02c6d;
-    color: #e02c6d;
+    border-left: solid 5px var(--qt);
+    color: var(--qt);
   }
-  
+
   pre {
-    color: #ff8700;
-    padding: 1em;
+    color: var(--cd);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: auto;
+    padding-right: auto;
     margin-bottom: 1em;
     margin-top: -1em;
     overflow-x: scroll;
@@ -80,7 +103,7 @@
   li {
     list-style-position: inside;
     margin-top: -1em;
-    color: #ff5c8f;
+    color: var(--h3);
   }
 
   li + br {
@@ -110,10 +133,18 @@
 <a href="/log/posts/2025/12/11/seguranca-na-internet/">(11/12/2025)<spam style="display: inline-block; width: 20px"></spam>segurança na internet</a><br><br>
 <a href="/log/posts/2025/11/12/primeiro-post/">(12/11/2025)<spam style="display: inline-block; width: 20px"></spam>primeiro post</a><br><br>
 <hr><br><br>
-<pre>Git hash: 5d4f83ba48c8e6083f513b55f3fff74c4483cb56<br><br>
-Data e hora de compilação: 17/06/2026 - 11:42:03<br><br>
-Frase da sorte:<br><br>
-... e querido papai do céu, em vez de botar as vitaminas no óleo de<br><br>
-bacalhau, bota nos merengues que seu Manoel tem lá na venda. Amém.<br><br>
+<pre>Git hash: c5b5d6a0a1182e8fab44d1e4742fccdb8f39009b<br><br>
+Data e hora de compilação: 17/06/2026 - 13:10:12<br><br>
+ _________________________________________<br><br>
+/ A preguiça é a mãe do progresso. Se o   \<br><br>
+| homem não tivesse preguiça de caminhar, |<br><br>
+| não teria inventado a roda --Mário      |<br><br>
+\ Quintana                                /<br><br>
+ -----------------------------------------<br><br>
+        \   ^__^<br><br>
+         \  (oo)\_______<br><br>
+            (__)\       )\/\<br><br>
+                ||----w |<br><br>
+                ||     ||<br><br>
 </pre>  </body>
 </html>
