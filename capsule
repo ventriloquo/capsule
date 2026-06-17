@@ -371,7 +371,7 @@ EOF
 Git hash: $(git log | head -n1 | awk '{print $2}')
 Data e hora de compilação: $(date '+%d/%m/%Y - %H:%M:%S')
 
-$(cowsay $(fortune -a ~/.local/share/brasil))
+$(cowsay $(fortune "frases/brasil"))
 \`\`\`
 EOF
 
